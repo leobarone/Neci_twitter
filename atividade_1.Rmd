@@ -1,0 +1,23 @@
+#install.packages("ROAuth")
+#install.packages("httr")
+#install.packages("twitteR")
+library(ROAuth)
+library(httr)
+library(twitteR)
+
+options(RCurlOptions = list(capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
+
+consumer_key <- "Dei4fs0CoWVj4xHwmEg6vCaKK"
+consumer_secret <- "4enUvutc6X59lptYMjxYl8zJuSb35phrrKcqQGnQA3q5O2x6fF"
+setup_twitter_oauth(consumer_key,
+                    consumer_secret,
+                    access_token = NULL,
+                    access_secret = NULL)
+
+tweets <- searchTwitter("#SeEuFosseDilma", n = 30, since = "2016-05-17")
+df.tweets <- twListToDF(tweets)
+
+View(df.tweets)
+names(df.tweets)
+df.tweets$retweetCount
+df.tweets$retweeted
