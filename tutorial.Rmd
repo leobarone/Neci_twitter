@@ -45,6 +45,8 @@ Para conectar-se ao Twitter via R, utilizaremos a função "setup_twitter_oauth"
 ```{r}
 consumer_key <- "Dei4fs0CoWVj4xHwmEg6vCaKK"
 consumer_secret <- "4enUvutc6X59lptYMjxYl8zJuSb35phrrKcqQGnQA3q5O2x6fF"
+access_token <- "47187333-8JRk8bDwWzfk1wlkCF5ZLf5QNa04M3EHN2o5M2rp6"
+access_secret <- "vCsLaFZMOQLv3EHJPh0MrNXJD0rJOHI11EELgWbKWN2TZ"
 ```
 
 Usamos agora a função "setup_twitter_oauth" e nos conectamos ao Twitter via R:
@@ -52,8 +54,8 @@ Usamos agora a função "setup_twitter_oauth" e nos conectamos ao Twitter via R:
 ```{r}
 setup_twitter_oauth(consumer_key,
                     consumer_secret,
-                    access_token = NULL,
-                    access_secret = NULL)
+                    access_token,
+                    access_secret)
 ```
 
 Obs: Não sei para que servem as chaves "Access Token" e "Access Secret". É possível obtê-las no seu App, mas podemos deixar ambas como NULL, tal qual o exemplo acima.
