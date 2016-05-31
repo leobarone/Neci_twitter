@@ -7,7 +7,7 @@ output: pdf_document
 
 Este tutorial é um rápido guia de como obter dados diretamente da API do Twitter e manipulá-los
 
-# Twitter APPs
+# Twitter Apps
 
 Uma das grandes facilidades ao trabalharmos com o twitter é a possibildiade de capturar os dados via API. Isso significa que, diferentemente de quando raspamos páginas de internet, não precisamos capturar o códido HTML de um página do twitter para obter dados sobre tweets, usuários, etc. Basta enviarmos um "request" especifico via API e recebemos de volta os dados desejados (o processo é muito semelhante ao do Web Service da Câmara dos Deputados).
 
@@ -93,4 +93,20 @@ str(tweets[[1]])
 df.tweets <- twListToDF(tweets)
 ```
 
+O novo data frame contém 16 variáveis, cada um com uma das informações que visualizamos com o comando "str"
 
+```{r}
+names(df.tweets)
+```
+
+Fica fácil observar os 1000 primeiros tweets do data frame:
+
+```{r}
+View(df.tweets)
+```
+
+Ou obter um vetor com a contagem de retweets:
+
+```{r}
+df.tweets$retweetCount
+```
