@@ -1,3 +1,44 @@
+---
+title: "Twitter"
+author: "Leonardo Sangali Barone e Alexia Aslan"
+date: "31-05-2016"
+output: pdf_document
+---
+
+Este tutorial é um rápido guia de como obter dados diretamente da API do Twitter e manipulá-los
+
+# Twitter APPs
+
+Uma das grandes facilidades ao trabalharmos com o twitter é a possibildiade de capturar os dados via API. Isso significa que, diferentemente de quando raspamos páginas de internet, não precisamos capturar o códido HTML de um página do twitter para obter dados sobre tweets, usuários, etc. Basta enviarmos um "request" especifico via API e recebemos de volta os dados desejados (o processo é muito semelhante ao do Web Service da Câmara dos Deputados).
+
+Antes de enviar requisições de dados, porém, precisamos informar ao Twitter quem somos e conectarnos à API. Nosso primeiro passo, portanto, é criar uma conta no twitter. Você pode usar sua conta pessoal se desejar.
+
+Uma vez criada a conta no Twitter, precisamos "criar um APP" específico para podermos nos conectar. Vá para o endereço https://apps.twitter.com/ e selecione "Create New App".
+
+Preencha os dados. Note que o campo "Website" precisa ser informado, mas você pode usar uma página pessoal (por exemplo, seu github). Para o bom funcionamento da conexão, o campo "Callback URL" deve ser preenchido com "127.0.0.1:1410".
+
+Volte para a página inicial do seu Twitter Apps. Escolha seu novo App. Clique na aba "Keys and Access Tokens". As chaves "Consumer Key (API Key)" e "Consumer Secret (API Secret)" são as informações que precisaremos para estabelecer uma conexão com o Twitter via R.
+
+
+# Pacote twitteR - preparando o ambiente
+
+Algumas das funções que vamos utilizar nesta atividade não estão na biblioteca básica do R. Temos, dessa forma, que começar instalando uma biblioteca chamada "twitteR". Esta biblioteca depende de outras duas, chamadas "ROAuth" (para autenticar conexões na web) e "httr" (para fazer requisições http, "http requests"). Vamos, assim, instalar as 3 bibliotecas:
+
+```{r}
+#install.packages("ROAuth")
+#install.packages("httr")
+install.packages("twitteR")
+```
+
+Uma vez instaladas as bibliotecas, as funções não estão automaticamente disponíveis. Para torná-las disponíveis é preciso "chamar" as bibliotecas:
+
+```{r}
+library(ROAuth)
+library(httr)
+library(twitteR)
+```
+  
+```{r}
 #install.packages("ROAuth")
 #install.packages("httr")
 #install.packages("twitteR")
@@ -21,3 +62,4 @@ View(df.tweets)
 names(df.tweets)
 df.tweets$retweetCount
 df.tweets$retweeted
+```
