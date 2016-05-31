@@ -155,4 +155,22 @@ A timeline também pode ser transformada em data frame:
 
 ```{r}
 df.timeline <- twListToDF(temer_timeline)
+View(df.timeline)
+```
+
+# Trends
+
+Por fim, podemos obter os trending topics do Twitter. Em primeiro lugar, observamos quais são as localidades para os quais trending topics são classificados:
+
+```{r}
+avail_trends <- availableTrendLocations()
+head(avail_trends)
+avail_trends[avail_trends$name == "Brazil",]
+```
+
+Com o código "woeid", obtemos os trends:
+
+```{r}
+trends <- getTrends(23424768)
+head(trends)
 ```
