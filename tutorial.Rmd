@@ -60,7 +60,7 @@ Obs: Não sei para que servem as chaves "Access Token" e "Access Secret". É pos
 
 Escolher a opção (1). Você será redirecionad@ ao browser para concluir a autenticação.
 
-# Procurando tweets com #hashtags e termos de busca.
+# Procurando tweets com #hashtags e termos de busca
 
 Um dos nossos interesses será procurar tweets utilizando hashtags ou termos chave. A função "searchTwitter" faz isso com facilidade. Por exemplo, um dos assuntos nos "trending topics" de hoje é "Filho de Lula". Vamos buscar os 300 últimos tweets com o termo:
 
