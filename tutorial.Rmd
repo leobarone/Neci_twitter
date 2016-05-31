@@ -15,7 +15,7 @@ Antes de enviar requisições de dados, porém, precisamos informar ao Twitter q
 
 Uma vez criada a conta no Twitter, precisamos "criar um APP" específico para podermos nos conectar. Vá para o endereço https://apps.twitter.com/ e selecione "Create New App".
 
-Preencha os dados. Note que o campo "Website" precisa ser informado, mas você pode usar uma página pessoal (por exemplo, seu github). Para o bom funcionamento da conexão, o campo "Callback URL" deve ser preenchido com "127.0.0.1:1410".
+Preencha os dados. Note que o campo "Website" precisa ser informado, mas você pode usar uma página pessoal (por exemplo, seu github). Para o bom funcionamento da conexão, o campo "Callback URL" deve ser preenchido com "http://127.0.0.1:1410".
 
 Volte para a página inicial do seu Twitter Apps. Escolha seu novo App. Clique na aba "Keys and Access Tokens". As chaves "Consumer Key (API Key)" e "Consumer Secret (API Secret)" são as informações que precisaremos para estabelecer uma conexão com o Twitter via R.
 
