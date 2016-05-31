@@ -122,7 +122,9 @@ Além do número máximo de tweets a serem capturados, podemos "filtrar" a busca
 
 Finalmente, uma função útil para a análise de tweets é "strip_retweets", que remove todos os retweets da lista de tweets:
 
+```{r}
 tweets_noret <- strip_retweets(tweets, strip_manual=TRUE, strip_mt=TRUE)
+```
 
 # Usuários e timeline de usuários
 
