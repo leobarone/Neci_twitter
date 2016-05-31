@@ -169,7 +169,7 @@ Por fim, podemos obter os trending topics do Twitter. Em primeiro lugar, observa
 ```{r}
 avail_trends <- availableTrendLocations()
 head(avail_trends)
-avail_trends[avail_trends$name == "Brazil",]
+avail_trends[avail_trends$country == "Brazil",]
 ```
 
 Com o código "woeid", obtemos os trends:
