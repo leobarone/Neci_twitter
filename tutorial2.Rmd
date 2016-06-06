@@ -1,3 +1,7 @@
+# Pacotes necessários para o código
+
+Vamos utilizar os pacotes abaixo para organizar os dados e construir os gráficos. Instale todos (basta remover o símbolo de comentário) e use a função 'library' para torná-los disponíveis na sessão.
+
 ```{r}
 #install.packages("ROAuth")
 #install.packages("httr")
@@ -20,50 +24,114 @@ library(igraph)
 library(ggplot2)
 library(gtable)
 library(foreign)
+```
 
-options(RCurlOptions = list(capath = system.file("CurlSSL", "cacert.pem", package = "RCurl"), ssl.verifypeer = FALSE))
+#Conexão com API Twitter
 
+Nosso primeiro passo será estabelecer a conexão com a API do Twitter para captura dos dados. Se você precisar de ajuda com esta etapa, volte para o [tutorial 1](https://github.com/leobarone/Neci_twitter/blob/master/tutorial.Rmd).
+
+Lembre-se de usar seuss próprios keys e tokens! (vou excluir os meus logo mais).
+
+```{r}
 consumer_key <- "Dei4fs0CoWVj4xHwmEg6vCaKK"
 consumer_secret <- "4enUvutc6X59lptYMjxYl8zJuSb35phrrKcqQGnQA3q5O2x6fF"
+access_token <- "47187333-8JRk8bDwWzfk1wlkCF5ZLf5QNa04M3EHN2o5M2rp6"
+access_secret <- "vCsLaFZMOQLv3EHJPh0MrNXJD0rJOHI11EELgWbKWN2TZ"
+
 setup_twitter_oauth(consumer_key,
                     consumer_secret,
-                    access_token = NULL,
-                    access_secret = NULL)
+                    access_token,
+                    access_secret)
+```
 
-tweets <- searchTwitter("#PassaDilma", n = 40000)
-tweets.df <- twListToDF(tweets)
+#Hashtags ForaDilma e ForaTemer
 
+Vamos construir uma base de dados procurando por duas hashtags que foram relativamente (mas não muito) populares nos dias anteriores a 07/06/2016: ForaDilma e ForaTemer. Esperamos, com a busca desses dois tópicos, obter duas redes que tem alguma sobreposição. O objetivo é tentar identificar graficamente tais redes.
+
+Fazemos buscas separadas para cada termo com 'searchTwitter' (limitei a busca em 10.000 tweets, mas poderíamos buscar mais), transformamos o resultado da busca em data frame com 'twListToDF' e apensamos ambos no objeto 'tweets.df' com o comando 'rbind':
+
+```{r}
+tweets1 <- searchTwitter("#ForaDilma", n = 10000)
+tweets2 <- searchTwitter("#ForaTemer", n = 10000)
+tweets.df1 <- twListToDF(tweets1)
+tweets.df2 <- twListToDF(tweets2)
+tweets.df <- rbind(tweets.df1, tweets.df2)```
+
+# Preparação dos dados
+
+```{r}
 author <- paste("@", tweets.df$screenName[which(tweets.df[[13]] == "TRUE")], sep = "")
+```
+```{r}
 retweets <- tweets.df$retweetCount[which(tweets.df[[13]] == "TRUE")]
+```
+```{r}
 isretweet <- tweets.df$retweetCount[which(tweets.df[[13]] == "TRUE")]
+```
+```{r}
 handles <- str_extract_all(tweets.df$text[which(tweets.df[[13]] == "TRUE")], '@[A-Za-a]+[A-Za-z0-9_]+')
+```
+```{r}
 date <- tweets.df$created[which(tweets.df[[13]] == "TRUE")]
+```
+```{r}
 text <- tweets.df$text[which(tweets.df[[13]] == "TRUE")]
-
+```
+```{r}
 n.handles <- sapply(handles, function(x) length(x))
+```
+```{r}
 author.paired <- author[which(n.handles > 0)]
+```
+```{r}
 handles.paired <- handles[which(n.handles > 0)]
+```
+```{r}
 author.retweeted <- sapply(handles.paired, function(x) (x[[1]]))
+```
+```{r}
 n.handles.paired <- sapply(handles.paired, function(x) length(x))
+```
+```{r}
 retweetd.paired <- retweets[which(n.handles > 0)]
+```
+```{r}
 isretweetd.paired <- isretweet[which(n.handles > 0)]
+```
+```{r}
 text.paired <- text[which(n.handles > 0)]
+```
+```{r}
 
 data <- cbind(author.paired, author.retweeted)
+```
+```{r}
 
 net <- graph.empty()
 net <- add.vertices(net, length(unique(c(data))), name=as.character(unique(c(data))))
 net <- add.edges(net, t(data))
 summary(net)
+```
+```{r}
 
 l <- layout_with_fr(net)
+```
+```{r}
 
 my.com.fast <- walktrap.community(net)
+```
+```{r}
 
 cent <- data.frame(bet = log(betweenness(net) + 1), eig = log(evcent(net)$vector + 1))
+```
+```{r}
 
 res <- lm(eig ~ bet, data = cent)$residuals
+```
+```{r}
 cent <- transform(cent, res = res)
+```
+```{r}
 
 p <- ggplot(cent, aes(x = bet, y = eig, label = rownames(cent), colour = res,
                        size = abs(res))) +
@@ -71,37 +139,56 @@ p <- ggplot(cent, aes(x = bet, y = eig, label = rownames(cent), colour = res,
   ylab("Eigenvector Centrality")
 
 p
+```
+```{r}
 
 outd <- degree(net, mode = "out")
 ind <- degree(net, mode = "in")
+```
+```{r}
 
 hubscore <- hub.score(net)$vector
 authscore <- hub.score(net)$vector
+```
+```{r}
 
 myauthority <- as.data.frame(cbind(names(outd), hubscore, authscore, outd, ind))
+```
+```{r}
 
 V(net)$size <- abs(res)
 nodes <- as.vector(V(net))
+```
+```{r}
 
 nodes[which(abs(res) < 0.7)] <- NA
+```
+```{r}
 
 names.label <- c("@fulanodetal", "@menganodecual")
+```
+```{r}
 my.label <- names(ind)
 select.id <- unlist(sapply(names.label, function(x) which(my.label == x)))
 my.label[which(log(ind + 1) < 3.7)] <- ""
 my.label2 <- my.label
+```
+```{r}
 
 for (i in 1:length(select.id)) {
   my.label2[select.id[i]] <- names(ind)[select.id[i]]
 }
+```
+```{r}
 
 E(net)$color <- "beige"
+```
+```{r}
 
 new.color <- data.frame(t(col2rgb(my.com.fast$membership) / 255))
 new.color <- rgb(new.color, alpha = 0.25)
-
-pdf(file = "network.pdf", 40, 40, pointsize = 12, compress = F)
-
+```
+```{r}
 pdf(file = "network.pdf", 40, 40, pointsize = 12, compress = F)
 plot.igraph(net, vertex.label = my.label2,
             vertex.size = log(ind + 1) / 3.5, vertex.label.color = 1,
@@ -115,4 +202,5 @@ plot.igraph(net, vertex.label = my.label2,
 #             edge.width = 0.1, edge.arrow.size = .2, vertex.label.cex = 1,
 #             edge.curved = TRUE, vertex.label.dist = rnorm(length(ind), 
 #                                                           .1, .03))
-dev.off()dev.off()```
+dev.off()dev.off()
+```
