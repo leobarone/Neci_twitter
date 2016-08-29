@@ -43,10 +43,10 @@ library(twitteR)
 Para conectar-se ao Twitter via R, utilizaremos a função "setup_twitter_oauth". Esta função recebe como parâmetros as "chaves" que você encontrará na página do App que você criou, Consumer Key (API Key)" e "Consumer Secret (API Secret)". É conveniente armazenar ambas em objtos de texto, como abaixo (note: as chaves abaixo são as minhas. Você pode usá-las, mas é legal substituir pelas suas para evitarmos múltiplas conexões):
 
 ```{r}
-consumer_key <- "Dei4fs0CoWVj4xHwmEg6vCaKK"
-consumer_secret <- "4enUvutc6X59lptYMjxYl8zJuSb35phrrKcqQGnQA3q5O2x6fF"
-access_token <- "47187333-8JRk8bDwWzfk1wlkCF5ZLf5QNa04M3EHN2o5M2rp6"
-access_secret <- "vCsLaFZMOQLv3EHJPh0MrNXJD0rJOHI11EELgWbKWN2TZ"
+consumer_key <- 
+consumer_secret <- 
+access_token <- 
+access_secret <- 
 ```
 
 Usamos agora a função "setup_twitter_oauth" e nos conectamos ao Twitter via R:
